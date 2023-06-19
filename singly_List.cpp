@@ -79,7 +79,12 @@ void printList(singList *list) {
         if (p == NULL)
             throw ERR_EMPTY;
         
-        cout << "List includes " << list->numOfNodes << " nodes: ";
+        cout << "List includes " << list->numOfNodes;
+        if (list->numOfNodes == 1)
+            cout << " node: ";
+        else
+            cout << " nodes: ";
+
         while (p != NULL) {
             cout << p->data << " ";
             p = p->next;
@@ -238,21 +243,18 @@ singList *deleteDataGrtThThres(singList *list, int threshold) {       // delete 
 
 int main() {    
     int n, data, pos, thres, oldData, newData, opt;
-    singList *list;
-
-    cout << "Enter the number of nodes: ";
-    cin >> n;
-    list = createList(n);   
+    singList *list; 
 
     while (1) {
-        cout << "MENU: " << endl;
+        cout << "-------------- MENU -------------" << endl;
         cout << "0. Quit" << endl;
-        cout << "1. Display list" << endl;
-        cout << "2. Insert node" << endl;
-        cout << "3. Delete node" << endl;
-        cout << "4. Print node" << endl;
-        cout << "5. Convert data of node" << endl;
-        cout << "6. Delete node whose data is greater than threshold" << endl;
+        cout << "1. Create list" << endl;
+        cout << "2. Display list" << endl;
+        cout << "3. Insert node" << endl;
+        cout << "4. Delete node" << endl;
+        cout << "5. Print node" << endl;
+        cout << "6. Convert data of node" << endl;
+        cout << "7. Delete node whose data is greater than threshold" << endl;
         cout << "Enter your option: ";
         cin >> opt;
 
@@ -261,34 +263,38 @@ int main() {
             case 0:
                 return 0;
             case 1:
+                cout << "Enter the number of nodes: ";
+                cin >> n;
+                list = createList(n);  
+            case 2:
                 printList(list);
                 break;
-            case 2:
+            case 3:
                 cout << "Enter the position: ";
                 cin >> pos;
                 cout << "Enter data: ";
                 cin >> data;
                 list = insertAt(list, pos, data);
                 break;
-            case 3:
+            case 4:
                 cout << "Enter the position: ";
                 cin >> pos;
                 list = deleteAt(list, pos);
                 break;
-            case 4:
+            case 5:
                 cout << "Enter the position: ";
                 cin >> pos;
                 printElement(list, pos);
                 break;
-            case 5:
+            case 6:
                 cout << "Enter old data: ";
                 cin >> oldData;
-                cout << "Enter new data to replace: ";
+                cout << "Enter new data: ";
                 cin >> newData;
                 list = convert(list, oldData, newData);
                 break;
-            case 6:
-                cout << "Enter the threshold to delete node whose data is greater than threshold: ";
+            case 7:
+                cout << "Enter the threshold: ";
                 cin >> thres;
                 list = deleteDataGrtThThres(list, thres);
                 break;
