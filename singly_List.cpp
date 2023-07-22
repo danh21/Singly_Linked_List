@@ -1,252 +1,18 @@
-#include <iostream>
+#include <bits/stdc++.h>
+#include "singly_List.h"
+
 using namespace std;
 
 
 
-#define ERR_NUMS        "The number of nodes is out of range !"
-#define ERR_EMPTY       "List is empty !"
-#define ERR_POS         "Position is out of range !"
-#define ERR_DUPLICATED  "No conversion !"
-
-
-
-struct node {
-    int data;
-    node *next;
-};
-
-struct singList {
-    int numOfNodes;
-    node *head;
-};
-
-
-
-node *createNode(int data) {
-    node *temp = new node;
-    temp->next = NULL; 
-    temp->data = data;
-    return temp;
-}
-
-
-
-node *addElement(node *p, int data) {
-    node *temp = createNode(data);
-    p->next = temp;                 // add node at the end of list
-    return temp;                    // return new node
-}
-
-
-
-singList *createList(int n) {
-    singList *list = new singList; 
-    list->numOfNodes = n;
-
-    try {
-        if (n < 1)
-            throw ERR_NUMS;
-
-        node *p;   
-        int data;
-
-        for (int i = 0; i < n; i++) {
-            cout << "Enter data of node: ";
-            cin >> data;
-            if (i == 0) {
-                list->head = createNode(data);
-                p = list->head;
-            }
-            else
-                p = addElement(p, data);
-        }  
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-        list->head = NULL;
-    }
-
-    return list;
-}
-
-
-
-void printList(singList *list) {
-	node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-        
-        cout << "List includes " << list->numOfNodes;
-        if (list->numOfNodes == 1)
-            cout << " node: ";
-        else
-            cout << " nodes: ";
-
-        while (p != NULL) {
-            cout << p->data << " ";
-            p = p->next;
-        }
-        cout << endl;
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    }
-}
-
-
-
-singList *insertAt(singList *list, int pos, int data) {    // insert new node at position
-    node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-
-        if ((pos < 0) || (pos > list->numOfNodes))
-            throw ERR_POS;
-
-        node *temp = new node;  // new node
-        temp->data = data;
-
-        if (pos == 0) {         // first node
-            temp->next = p;
-            list->head = temp;
-        }
-        else {
-            for (int i = 1; i < pos; i++)
-                p = p->next;
-            temp->next = p->next;
-            p->next = temp;
-        }
-
-        list->numOfNodes++;
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    }
-
-    return list;
-}
-
-
-
-singList *deleteAt(singList *list, int pos) {
-    node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-
-        if (pos < 0 || pos >= list->numOfNodes)
-            throw ERR_POS;
-
-        if (pos == 0)
-            list->head = p->next;
-        else {
-            for (int i = 1; i < pos; i++)
-                p = p->next;
-            node *temp = p->next;       // node will be deleted
-            p->next = temp->next;
-            delete(temp); 
-        } 
-
-        list->numOfNodes--; 
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    }     
-
-    return list;
-}
-
-
-
-void printElement(singList *list, int pos) {
-	node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-
-        if (pos < 0 || pos >= list->numOfNodes)
-            throw ERR_POS;
-
-        for (int i = 0; i < pos; i++)
-            p = p->next;
-        cout << "Data of this node: " << p->data << endl;
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    } 
-}
-
-
-
-singList *convert(singList *list, int oldData, int newData) {  // convert oldData to newData
-    node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-
-        if (oldData == newData)
-            throw ERR_DUPLICATED;
-
-        while (p != NULL) {
-            if (p->data == oldData)
-                p->data = newData;
-            p = p->next;
-        }
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    } 
-
-    return list;
-}
-
-
-
-singList *deleteDataGrtThThres(singList *list, int threshold) {       // delete node whose data is greater than threshold
-    node *p = list->head;
-
-    try {
-        if (p == NULL)
-            throw ERR_EMPTY;
-
-        for (int i = 0; i < list->numOfNodes; i++) {
-            if (p->data > threshold) {
-                p = p->next;
-                list = deleteAt(list, i--);
-            }
-            else
-                p = p->next;
-        }
-    }
-
-    catch (char const *exc) {
-        cout << exc << endl;
-    } 
-
-    return list;
-}
-
-
-
 int main() {    
-    int n, data, pos, thres, oldData, newData, opt;
-    singList *list; 
+    int n, k, data, pos, thres, oldData, newData, opt, isQuit = 0;
+    singList *list1 = NULL;
+
+
 
     while (1) {
-        cout << "-------------- MENU -------------" << endl;
+        cout << endl << " ---------------------------- MENU --------------------------- " << endl;
         cout << "0. Quit" << endl;
         cout << "1. Create list" << endl;
         cout << "2. Display list" << endl;
@@ -255,54 +21,83 @@ int main() {
         cout << "5. Print node" << endl;
         cout << "6. Convert data of node" << endl;
         cout << "7. Delete node whose data is greater than threshold" << endl;
+        cout << "8. Reverse every k nodes" << endl;
+        cout << "9. Remove duplicate nodes" << endl;
         cout << "Enter your option: ";
         cin >> opt;
 
         switch (opt)
         {
             case 0:
-                return 0;
+                cout << "Quited process of list 1" << endl << endl;
+                isQuit = 1;
+                break;
             case 1:
                 cout << "Enter the number of nodes: ";
                 cin >> n;
-                list = createList(n);  
+                list1 = createList(n);  
+                break;
             case 2:
-                printList(list);
+                printList(list1);
                 break;
             case 3:
                 cout << "Enter the position: ";
                 cin >> pos;
                 cout << "Enter data: ";
                 cin >> data;
-                list = insertAt(list, pos, data);
+                list1 = insertAt(list1, pos, data);
                 break;
             case 4:
                 cout << "Enter the position: ";
                 cin >> pos;
-                list = deleteAt(list, pos);
+                list1 = deleteAt(list1, pos);
                 break;
             case 5:
                 cout << "Enter the position: ";
                 cin >> pos;
-                printElement(list, pos);
+                printElement(list1, pos);
                 break;
             case 6:
                 cout << "Enter old data: ";
                 cin >> oldData;
                 cout << "Enter new data: ";
                 cin >> newData;
-                list = convert(list, oldData, newData);
+                list1 = convert(list1, oldData, newData);
                 break;
             case 7:
                 cout << "Enter the threshold: ";
                 cin >> thres;
-                list = deleteDataGrtThThres(list, thres);
+                list1 = deleteDataGrtThThres(list1, thres);
+                break;
+            case 8:
+                cout << "Enter k: ";
+                cin >> k;
+                list1 = reverse(list1, k);
+                break;
+            case 9:
+                list1 = removeDuplicates(list1);
                 break;
             default:
                 cout << "Invalid option !" << endl;
                 break;
         }
+
+        if (isQuit) {
+            isQuit = 0;
+            break; 
+        }
     }
 
+
+
+    // cout << "Enter data of list 2:" << endl;
+    // singList *list2 = createList(3);
+    // singList *Union = makeUnion(list1, list2);
+    // cout << "The union ";
+    // printList(Union);
+
+
+
+    delete list1;
     return 0;
 }
