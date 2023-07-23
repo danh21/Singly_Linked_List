@@ -66,9 +66,8 @@ void printList(singList *list);
  * @param list 
  * @param pos - postion of new node
  * @param data - data of new node
- * @return singList* 
  */
-singList *insertAt(singList *list, int pos, int data);
+void insertAt(singList *list, int pos, int data);
 
 
 
@@ -77,9 +76,8 @@ singList *insertAt(singList *list, int pos, int data);
  * 
  * @param list 
  * @param pos - positon of node to be deleted
- * @return singList* 
  */
-singList *deleteAt(singList *list, int pos);
+void deleteAt(singList *list, int pos);
 
 
 
@@ -97,11 +95,10 @@ void printElement(singList *list, int pos);
  * @brief convert old data to new data for list
  * 
  * @param list 
- * @param oldData - old data
- * @param newData - new data
- * @return singList* 
+ * @param oldData 
+ * @param newData 
  */
-singList *convert(singList *list, int oldData, int newData);
+void convert(singList *list, int oldData, int newData);
 
 
 
@@ -109,10 +106,9 @@ singList *convert(singList *list, int oldData, int newData);
  * @brief delete node whose data is greater than threshold
  * 
  * @param list 
- * @param threshold
- * @return singList* 
+ * @param threshold 
  */
-singList *deleteDataGrtThThres(singList *list, int threshold);
+void deleteDataGrtThThres(singList *list, int threshold);
 
 
 
@@ -153,6 +149,16 @@ singList *reverse(singList* list, int k);
  */
 singList *removeDuplicates(singList *list); 
 
+
+
+/**
+ * @brief ascending sorting
+ * 
+ * https://practice.geeksforgeeks.org/problems/given-a-linked-list-of-0s-1s-and-2s-sort-it/1
+ * 
+ * @param list 
+ */
+void ascendingSort(singList *list);
 /* ------------------------------------------------------- PROTOTYPE - END ----------------------------------------------------------- */
 
 
@@ -220,7 +226,7 @@ void printList(singList *list)
 
 
 
-singList *insertAt(singList *list, int pos, int data) 
+void insertAt(singList *list, int pos, int data) 
 {    
     try {
         if (list == NULL)
@@ -249,13 +255,11 @@ singList *insertAt(singList *list, int pos, int data)
     catch (char const *exc) {
         cout << exc << endl;
     }
-
-    return list;
 }
 
 
 
-singList *deleteAt(singList *list, int pos) 
+void deleteAt(singList *list, int pos) 
 {
     try {
         if (list == NULL)
@@ -273,7 +277,7 @@ singList *deleteAt(singList *list, int pos)
                 p = p->next;
             node *temp = p->next;               // node will be deleted
             p->next = temp->next;
-            delete(temp); 
+            delete temp; 
         } 
 
         list->numOfNodes--;                     // decrease the number of nodes
@@ -282,8 +286,6 @@ singList *deleteAt(singList *list, int pos)
     catch (char const *exc) {
         cout << exc << endl;
     }     
-
-    return list;
 }
 
 
@@ -311,7 +313,7 @@ void printElement(singList *list, int pos)
 
 
 
-singList *convert(singList *list, int oldData, int newData) 
+void convert(singList *list, int oldData, int newData) 
 { 
     try {
         if (list == NULL)
@@ -332,13 +334,11 @@ singList *convert(singList *list, int oldData, int newData)
     catch (char const *exc) {
         cout << exc << endl;
     } 
-
-    return list;
 }
 
 
 
-singList *deleteDataGrtThThres(singList *list, int threshold) 
+void deleteDataGrtThThres(singList *list, int threshold) 
 {      
     try {
         if (list == NULL)
@@ -349,7 +349,7 @@ singList *deleteDataGrtThThres(singList *list, int threshold)
         for (int i = 0; i < list->numOfNodes; i++) {
             if (p->data > threshold) {
                 p = p->next;
-                list = deleteAt(list, i--);
+                deleteAt(list, i--);
             }
             else
                 p = p->next;
@@ -358,9 +358,7 @@ singList *deleteDataGrtThThres(singList *list, int threshold)
 
     catch (char const *exc) {
         cout << exc << endl;
-    } 
-
-    return list;
+    }
 }
 
 
@@ -498,6 +496,35 @@ singList *removeDuplicates(singList *list)
         }
         
         return nonDuplicate;
+    }
+
+    catch (char const *exc) {
+        cout << exc << endl;
+    }
+}
+
+
+
+void ascendingSort(singList *list) {
+    try {
+        if (list == NULL)
+            throw ERR_EMPTY;
+
+        node *p = list->head; 
+        vector<int> nodes;
+        
+        while (p != NULL) {                 // push data of nodes into vector to sort
+            nodes.push_back(p->data);
+            p = p->next;
+        }
+        
+        sort(nodes.begin(), nodes.end());
+        
+        p = list->head;
+        for (int data : nodes) {            // push data of nodes back into list after sorting
+            p->data = data;
+            p = p->next;
+        }
     }
 
     catch (char const *exc) {

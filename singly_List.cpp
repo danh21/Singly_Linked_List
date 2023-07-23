@@ -23,6 +23,7 @@ int main() {
         cout << "7. Delete node whose data is greater than threshold" << endl;
         cout << "8. Reverse every k nodes" << endl;
         cout << "9. Remove duplicate nodes" << endl;
+        cout << "10. Ascending sorting" << endl;
         cout << "Enter your option: ";
         cin >> opt;
 
@@ -45,12 +46,12 @@ int main() {
                 cin >> pos;
                 cout << "Enter data: ";
                 cin >> data;
-                list1 = insertAt(list1, pos, data);
+                insertAt(list1, pos, data);
                 break;
             case 4:
                 cout << "Enter the position: ";
                 cin >> pos;
-                list1 = deleteAt(list1, pos);
+                deleteAt(list1, pos);
                 break;
             case 5:
                 cout << "Enter the position: ";
@@ -62,12 +63,12 @@ int main() {
                 cin >> oldData;
                 cout << "Enter new data: ";
                 cin >> newData;
-                list1 = convert(list1, oldData, newData);
+                convert(list1, oldData, newData);
                 break;
             case 7:
                 cout << "Enter the threshold: ";
                 cin >> thres;
-                list1 = deleteDataGrtThThres(list1, thres);
+                deleteDataGrtThThres(list1, thres);
                 break;
             case 8:
                 cout << "Enter k: ";
@@ -76,6 +77,9 @@ int main() {
                 break;
             case 9:
                 list1 = removeDuplicates(list1);
+                break;
+            case 10:
+                ascendingSort(list1);
                 break;
             default:
                 cout << "Invalid option !" << endl;
